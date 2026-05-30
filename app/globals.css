@@ -1,0 +1,282 @@
+@import "tailwindcss";
+
+/* ═══════════════════════════════════════════════════════
+   ぽもじかん デザイントークン
+   正典: v11/themes.jsx 「夜雨 (yoruame)」
+   ═══════════════════════════════════════════════════════ */
+@theme {
+  /* 背景 */
+  --color-bg-deep:    #06101b;
+  --color-bg-mid:     #0d1f2e;
+  --color-bg-light:   #1b3a55;
+  --color-surface:    rgba(20, 40, 62, 0.55);
+  --color-surface-solid: #102438;
+  --color-chrome:     #0a1726;
+
+  /* テキスト */
+  --color-ink:        #eaf2fa;
+  --color-ink-mute:   #7c98b0;
+  --color-ink-dim:    #4a6478;
+
+  /* ライン */
+  --color-line:       rgba(180, 220, 250, 0.10);
+  --color-line-strong: rgba(180, 220, 250, 0.22);
+
+  /* アクセント */
+  --color-accent:     #87ceeb;
+  --color-accent2:    #b8e0f5;
+  --color-gold:       #f0d48a;
+  --color-gold-warm:  #c9a84c;
+  --color-rose:       #e89aa8;
+  --color-purple:     #b8a8ff;
+
+  /* 字グロー */
+  --color-glyph:      rgba(220, 240, 255, 0.92);
+  --color-glyph-glow: rgba(135, 206, 235, 0.45);
+
+  /* フォント */
+  --font-display: "Shippori Mincho B1", "Noto Serif JP", serif;
+  --font-kanji:   "Shippori Mincho B1", "Noto Serif JP", serif;
+  --font-body:    "Zen Kaku Gothic New", "Noto Sans JP", system-ui, sans-serif;
+  --font-mono:    "JetBrains Mono", monospace;
+}
+
+/* ═══════════════════ リセット ═══════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  font-family: var(--font-body);
+  font-size: 16px;
+  color: var(--color-ink);
+  background: var(--color-bg-deep);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ═══════════════════ ベース背景 ═══════════════════ */
+body {
+  min-height: 100dvh;
+  background:
+    radial-gradient(circle at 78% 18%, rgba(135, 206, 235, 0.09) 0%, transparent 45%),
+    radial-gradient(circle at 22% 88%, rgba(240, 212, 138, 0.06) 0%, transparent 42%),
+    radial-gradient(circle at 50% 50%, rgba(13, 31, 46, 0.5) 0%, transparent 100%),
+    var(--color-bg-deep);
+}
+
+/* ═══════════════════ タイポグラフィ ═══════════════════ */
+.font-display, .font-kanji {
+  font-family: var(--font-kanji);
+}
+
+/* ═══════════════════ スクロールバー ═══════════════════ */
+::-webkit-scrollbar { width: 3px; height: 3px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: rgba(180, 220, 250, 0.15);
+  border-radius: 2px;
+}
+
+/* ═══════════════════ 雨ライン背景アニメ ═══════════════════ */
+@keyframes rain-fall {
+  0%   { transform: translateY(-100px); opacity: 0; }
+  10%  { opacity: 0.6; }
+  90%  { opacity: 0.4; }
+  100% { transform: translateY(110dvh); opacity: 0; }
+}
+
+.rain-bg {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.rain-line {
+  position: absolute;
+  top: -100px;
+  width: 1px;
+  border-radius: 1px;
+  background: linear-gradient(180deg, transparent, rgba(135, 206, 235, 0.3), transparent);
+  animation: rain-fall linear infinite;
+}
+
+/* ═══════════════════ XPバー ═══════════════════ */
+@keyframes xp-shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+.xp-bar-fill {
+  background: linear-gradient(
+    90deg,
+    var(--color-accent) 0%,
+    var(--color-accent2) 40%,
+    rgba(255,255,255,0.6) 50%,
+    var(--color-accent2) 60%,
+    var(--color-accent) 100%
+  );
+  background-size: 200% 100%;
+  animation: xp-shimmer 3s linear infinite;
+}
+
+/* ═══════════════════ 金グロー（オリジナルぽもじ） ═══════════════════ */
+@keyframes gold-pulse {
+  0%, 100% {
+    text-shadow:
+      0 0 18px rgba(240, 212, 138, 0.7),
+      0 0 50px rgba(240, 212, 138, 0.25);
+  }
+  50% {
+    text-shadow:
+      0 0 28px rgba(240, 212, 138, 1.0),
+      0 0 70px rgba(240, 212, 138, 0.45);
+  }
+}
+.kanji-glow-gold {
+  animation: gold-pulse 3.2s ease-in-out infinite;
+}
+
+/* ═══════════════════ フェードイン ═══════════════════ */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.fade-up        { animation: fade-up 0.55s cubic-bezier(.2,.7,.3,1) forwards; }
+.fade-up-1      { animation-delay: 0.05s; }
+.fade-up-2      { animation-delay: 0.12s; }
+.fade-up-3      { animation-delay: 0.20s; }
+.fade-up-4      { animation-delay: 0.28s; }
+.fade-up-5      { animation-delay: 0.36s; }
+.fade-up-6      { animation-delay: 0.44s; }
+
+/* ═══════════════════ 落下キャラ演出 ═══════════════════ */
+@keyframes rain-drop-char {
+  0%   { transform: translateY(-6px); opacity: 0; }
+  20%  { opacity: 1; }
+  80%  { opacity: 1; }
+  100% { transform: translateY(6px); opacity: 0; }
+}
+.rain-drop {
+  animation: rain-drop-char 2.4s ease-in-out infinite;
+}
+
+/* ═══════════════════ ガラスカード ═══════════════════ */
+.glass-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-line-strong);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.glass-card-solid {
+  background: var(--color-surface-solid);
+  border: 1px solid var(--color-line-strong);
+}
+
+/* ═══════════════════ ボタン ═══════════════════ */
+.btn-primary {
+  background: var(--color-accent);
+  color: var(--color-bg-deep);
+  font-family: var(--font-body);
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  transition: all 0.18s cubic-bezier(.2,.7,.3,1);
+  box-shadow: 0 0 24px rgba(135, 206, 235, 0.35);
+}
+.btn-primary:hover   { box-shadow: 0 0 32px rgba(135, 206, 235, 0.5); }
+.btn-primary:active  { transform: scale(0.96); }
+
+.btn-gold {
+  background: linear-gradient(135deg, var(--color-gold) 0%, var(--color-gold-warm) 100%);
+  color: var(--color-bg-deep);
+  font-family: var(--font-body);
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  transition: all 0.18s cubic-bezier(.2,.7,.3,1);
+  box-shadow: 0 0 24px rgba(240, 212, 138, 0.35);
+}
+.btn-gold:active { transform: scale(0.96); }
+
+/* ═══════════════════ タイマーSVG遷移 ═══════════════════ */
+.timer-dash {
+  transition: stroke-dashoffset 1s linear;
+}
+.timer-dash-instant {
+  transition: none;
+}
+
+/* ═══════════════════ input ═══════════════════ */
+input[type="text"],
+input[type="number"] {
+  font-family: var(--font-body);
+  color: var(--color-ink);
+  background: var(--color-surface-solid);
+  border: 1.5px solid var(--color-line-strong);
+  outline: none;
+  transition: border-color 0.15s;
+}
+input[type="text"]:focus,
+input[type="number"]:focus {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px rgba(135, 206, 235, 0.15);
+}
+input::placeholder { color: var(--color-ink-dim); }
+
+/* range slider */
+input[type="range"] {
+  accent-color: var(--color-accent);
+}
+
+/* ═══════════════════ 波紋 タップエフェクト ═══════════════════ */
+@keyframes ripple {
+  0%   { transform: scale(0); opacity: 0.5; }
+  100% { transform: scale(3.5); opacity: 0; }
+}
+.ripple-anim {
+  animation: ripple 0.55s cubic-bezier(.2,.7,.3,1) forwards;
+}
+
+/* ═══════════════════ レアリティバッジ ═══════════════════ */
+.rarity-badge {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 99px;
+  border: 1px solid;
+  letter-spacing: 0.05em;
+}
+
+/* ═══════════════════ SafeArea ═══════════════════ */
+.pb-safe { padding-bottom: env(safe-area-inset-bottom, 0px); }
+.pt-safe { padding-top: env(safe-area-inset-top, 0px); }
+
+/* ═══════════════════ PC レイアウト ═══════════════════ */
+/* BottomNav は md 以上で非表示、左サイドナビに切り替え */
+@media (min-width: 768px) {
+  .mobile-only { display: none !important; }
+}
+@media (max-width: 767px) {
+  .desktop-only { display: none !important; }
+}
+
+/* スクロールバー（サイドバー用） */
+.sidebar-scroll {
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(180,220,250,0.12) transparent;
+}
+.sidebar-scroll::-webkit-scrollbar { width: 3px; }
+.sidebar-scroll::-webkit-scrollbar-thumb {
+  background: rgba(180,220,250,0.12);
+  border-radius: 2px;
+}
+
+/* PC ゲーム画面: Canvas エリアのアスペクト固定解除 */
+@media (min-width: 768px) {
+  .game-canvas-area {
+    flex: 1;
+    min-height: 0;
+  }
+}
