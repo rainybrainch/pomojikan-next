@@ -17,16 +17,25 @@ export default function PomodoroTimer() {
   const [total, setTotal] = useState(FOCUS_SEC);
   const [remaining, setRemaining] = useState(FOCUS_SEC);
   const [isRunning, setIsRunning] = useState(false);
+  const [justCompleted, setJustCompleted] = useState(false);
 
   useEffect(() => {
     if (!isRunning) return;
     if (remaining <= 0) {
+      // 完了 → 逆モードへ自動切替
+      const nextMode: TimerMode = mode === "focus" ? "break" : "focus";
+      const nextSec = nextMode === "focus" ? FOCUS_SEC : BREAK_SEC;
+      setMode(nextMode);
+      setTotal(nextSec);
+      setRemaining(nextSec);
       setIsRunning(false);
+      setJustCompleted(true);
+      setTimeout(() => setJustCompleted(false), 2000);
       return;
     }
     const id = setInterval(() => setRemaining((r) => r - 1), 1000);
     return () => clearInterval(id);
-  }, [isRunning, remaining]);
+  }, [isRunning, remaining, mode]);
 
   const switchMode = useCallback((m: TimerMode) => {
     setMode(m);
@@ -168,11 +177,16 @@ export default function PomodoroTimer() {
         </button>
       </div>
 
-      {/* ヒント */}
-      <p className="text-center text-xs" style={{ color: "var(--color-text-muted)" }}>
-        {isFocus
-          ? "集中中は文字が降ってくる ✦"
-          : "休憩中は泡が浮かんで消える ○"}
+      {/* ヒント / 完了フラッシュ */}
+      <p className="text-center text-xs transition-colors" style={{
+        color: justCompleted ? "var(--color-rain)" : "var(--color-text-muted)",
+        fontWeight: justCompleted ? 600 : 400,
+      }}>
+        {justCompleted
+          ? (isFocus ? "休憩へ ○" : "集中再開 ✦")
+          : isFocus
+            ? "集中中は文字が降ってくる ✦"
+            : "休憩中は泡が浮かんで消える ○"}
       </p>
     </div>
   );

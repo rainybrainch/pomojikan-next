@@ -6,11 +6,11 @@ interface Props {
 }
 
 const SCRIPT_LABELS: Record<string, string> = {
-  楷書: "Lv1〜10",
-  行書: "Lv11〜25",
-  草書: "Lv26〜50",
-  篆書: "Lv51〜80",
-  甲骨: "Lv81+",
+  楷書: "Lv1〜9",
+  行書: "Lv10〜29",
+  草書: "Lv30〜69",
+  篆書: "Lv70〜149",
+  甲骨: "Lv150+",
 };
 
 export default function CompanionCard({ companion }: Props) {

@@ -17,10 +17,23 @@ const PHRASES = [
   "スマホ時間を、育つ時間に。",
   "一字ずつ、確かに育てる。",
   "落ちてくる文字を、捕まえよう。",
+  "集中の25分が、字を育てる。",
+  "今日も、字と向き合う。",
+  "降る字に、手を伸ばす。",
+  "積み上げた字は、消えない。",
+  "静けさの中に、力が宿る。",
+  "今日の集中が、明日の財産になる。",
+  "字を育てることは、自分を育てること。",
+  "雨のように降る字を、ひとつひとつ。",
+  "深呼吸ひとつ。さあ、始めよう。",
+  "あなたの字の物語が、今日も続く。",
+  "焦らず、でも確実に。",
 ];
 
 export default function HeroArea({ stats }: Props) {
-  const phrase = PHRASES[0];
+  const now = new Date();
+  const daySeed = now.getFullYear() * 10000 + (now.getMonth() + 1) * 100 + now.getDate();
+  const phrase = PHRASES[daySeed % PHRASES.length];
   const greeting = getGreeting();
 
   return (
@@ -38,12 +51,14 @@ export default function HeroArea({ stats }: Props) {
 
       {/* 統計ピル */}
       <div className="flex items-center gap-3 flex-wrap">
-        <StatPill label="総ポモドーロ" value={`${stats.totalPomodoros}回`} />
+        <StatPill label="今日" value={`${stats.todayPomodoros}回`} />
         <StatPill label="累計XP" value={`${stats.totalXp.toLocaleString()}`} accent />
-        <div className="flex items-center gap-1 text-xs" style={{ color: "var(--color-text-muted)" }}>
-          <span className="rain-drop inline-block">雨</span>
-          <span>文字は育っている</span>
-        </div>
+        {stats.streak > 0 && (
+          <StatPill
+            label="連続"
+            value={`${stats.streak}日 ${stats.streak >= 30 ? "🔥" : stats.streak >= 7 ? "✦" : "◈"}`}
+          />
+        )}
       </div>
     </div>
   );
